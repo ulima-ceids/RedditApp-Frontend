@@ -1,0 +1,136 @@
+.login-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .login-box {
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    padding: 20px;
+    width: 350px;
+    text-align: center;
+    border-radius: 10px;
+  }
+  
+  .logo {
+    width: 175px;
+    margin-bottom: 20px;
+  }
+  
+  .login-form input {
+    width: 100%;
+    padding: 10px;
+    margin: 8px 0;
+    border: 1px solid #dbdbdb;
+    border-radius: 5px;
+    background-color: #fafafa;
+  }
+  
+  .login-form .login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #0095f6;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .login-form .login-button:hover {
+    background-color: #007bb5;
+  }
+  
+  .divider {
+    color: #8e8e8e;
+    font-size: 14px;
+    margin: 10px 0;
+    position: relative;
+  }
+  
+  .divider::before, .divider::after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background-color: #dbdbdb;
+  }
+  
+  .divider::before {
+    left: 0;
+  }
+  
+  .divider::after {
+    right: 0;
+  }
+  
+  .google-login-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4285F4;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  .lr-button {
+    width: 100%;
+    padding: 10px;
+    background-color: #357ae8;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+  
+  .google-login-button:hover {
+    background-color: #357ae8;
+  }
+
+  .lr-button:hover {
+    background-color: #357ae8;
+  }
+  
+  .forgot-password {
+    display: block;
+    margin-top: 10px;
+    font-size: 12px;
+    color: #00376b;
+    text-decoration: none;
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline;
+  }
+  
+  .signup-box {
+    background-color: white;
+    border: 1px solid #dbdbdb;
+    padding: 20px;
+    margin-top: 20px;
+    text-align: center;
+    border-radius: 10px;
+    width: 350px;
+  }
+  
+  .signup-box p {
+    font-size: 14px;
+  }
+  
+  .signup-box a {
+    color: #0095f6;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  
+  .signup-box a:hover {
+    text-decoration: underline;
+  }
