@@ -3,11 +3,14 @@ import './Welcome.css';
 import { useState, useEffect } from 'react';
 import { gapi } from "gapi-script";
 import GoogleLogin from 'react-google-login';
+import { useNavigate } from "react-router-dom";
 
 function Welcome() {
   const clientID = "83139650099-3jt4la3jes1524763kfr7fffa1tj6pps.apps.googleusercontent.com"
   const [user, setUser] = useState({});
   const [loggeIn, setLoggetInfo] = useState(false); 
+  const navigate = useNavigate();
+
 
   const onSuccess = (response) => {
     setUser(response.profileObj);
@@ -28,6 +31,11 @@ function Welcome() {
     gapi.load("client:auth2", start);
   });
 
+  const goToRegister = () => {
+    console.log("Go to register");
+    navigate("/register");
+  };
+
   return (
     
       <div className="login-container">
@@ -45,12 +53,12 @@ function Welcome() {
               cookiePolicy={"single_host_origin"}
             />
             <button className="lr-button" onClick={handleLogout}>
-                Registrarse
+                Iniciar Sesion
             </button>
           <a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
         </div>
         <div className="signup-box">
-          <p>¿No tienes una cuenta? <a href="#">Regístrate</a></p>
+          <p>¿No tienes una cuenta? <a href="#" onClick={goToRegister}>Regístrate</a></p>
         </div>
       </div>
   );
