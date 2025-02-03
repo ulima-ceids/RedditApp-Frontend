@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form';
 import "./Login.css";
 
 function Login() {
-    const { login, handleSubmit, formState: { errors } } = useForm();
+    const { register , handleSubmit, formState: { errors } } = useForm();
     const onSubmit = (data) => {
         console.log(data);
     };
@@ -21,7 +21,7 @@ function Login() {
                         type="email"
                         className="form-control"
                         id="email"
-                        {...login('email')}
+                        {...register('email')}
                     />
                 </div>
                 {/* Password */}
@@ -33,7 +33,7 @@ function Login() {
                         type="password"
                         className="form-control"
                         id="password"
-                        {...login("password", { required: "La contraseñano puede estar vacía", minLength: { value: 6, message: "La contraseña debe tener al menos 6 caracteres" } })}
+                        {...register("password", { required: "La contraseñano puede estar vacía", minLength: { value: 6, message: "La contraseña debe tener al menos 6 caracteres" } })}
                     />
                     {errors.password && <span>{errors.password.message}</span>}
                 </div>
