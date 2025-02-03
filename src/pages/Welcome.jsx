@@ -36,6 +36,11 @@ function Welcome() {
     navigate("/register");
   };
 
+  const goToLogin = () => {
+    console.log("Go to log");
+    navigate("/login");
+  };
+
   return (
     
       <div className="login-container">
@@ -52,7 +57,7 @@ function Welcome() {
               buttonText="Iniciar sesión con Google"
               cookiePolicy={"single_host_origin"}
             />
-            <button className="lr-button" onClick={handleLogout}>
+            <button className="lr-button" onClick={goToLogin}>
                 Iniciar Sesion
             </button>
           <a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
