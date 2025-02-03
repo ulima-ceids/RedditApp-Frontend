@@ -33,7 +33,7 @@ function Login() {
                         type="password"
                         className="form-control"
                         id="password"
-                        {...register("password", { required: "La contraseñano puede estar vacía", minLength: { value: 6, message: "La contraseña debe tener al menos 6 caracteres" } })}
+                        {...register("password", { required: "La contraseñano puede estar vacía" })}
                     />
                     {errors.password && <span>{errors.password.message}</span>}
                 </div>
