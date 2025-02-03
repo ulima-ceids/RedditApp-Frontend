@@ -3,10 +3,19 @@ import { useForm } from 'react-hook-form';
 import './Register.css';
 
 function Register() {
-    const { register, handleSubmit, formState: { errors } } = useForm();
+    const { register, handleSubmit, formState: { errors }, setError } = useForm();
     const onSubmit = (data) => {
-        console.log(data);
-        console.log(Date.now())
+        const storedData = JSON.parse(localStorage.getItem('formDataArray')) || [];
+
+        const emailExists = storedData.some(entry => entry.email === data.email);
+
+        if (emailExists) {
+            setError('email', { type: 'manual', message: 'Este correo ya está registrado' });
+        } else {
+            storedData.push(data);
+            localStorage.setItem('formDataArray', JSON.stringify(storedData));
+            console.log(data);
+        }
     };
 
     return (
