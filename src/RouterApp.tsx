@@ -1,10 +1,9 @@
-import React from 'react';
 import App from './App';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import SignUp from './SignUp';
 import Login from './Login';
 
-const RouterApp: React.FC = () => {
+const RouterApp = () => {
   return (
     <Router>
       <Routes>

@@ -3,7 +3,7 @@ import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Form, { Field } from './Form'
 
-const SignUp: React.FC = () => {
+const SignUp = () => {
   const navigate = useNavigate()
   
   interface Usuario {
