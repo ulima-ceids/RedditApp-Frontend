@@ -1,5 +1,5 @@
 import { useCallback } from "react";
-import { useRouter } from "next/router";
+//import { useRouter } from "next/router";
 import { useState, useEffect } from 'react';
 import styles from "./crear-cuenta.module.css";
 import { Zoom } from "../extra/zoom.js"
