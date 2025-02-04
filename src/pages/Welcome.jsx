@@ -41,6 +41,11 @@ function Welcome() {
     navigate("/login");
   };
 
+  const goToForgotPassword = () => {
+    console.log("Go to Forgot Password");
+    navigate("/forgotpassword")
+  };
+
   return (
     
       <div className="login-container">
@@ -60,7 +65,7 @@ function Welcome() {
             <button className="lr-button" onClick={goToLogin}>
                 Iniciar Sesion
             </button>
-          <a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
+          <a onClick={goToForgotPassword} className="forgot-password">¿Olvidaste tu contraseña?</a>
         </div>
         <div className="signup-box">
           <p>¿No tienes una cuenta? <a href="#" onClick={goToRegister}>Regístrate</a></p>
