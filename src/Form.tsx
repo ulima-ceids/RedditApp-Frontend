@@ -1,20 +1,27 @@
 import React from "react";
 
 export interface Field {
-    name: string,
+    name?: string, //=label en minúscula
+    required?: boolean, //=true
     label: string,
     type: "text" | "date" | "password" | "email" | "number" | "select",
-    value: string | number,
-    options?: { label: string; value: number }[] // Para selects
+    value: string,
+    options?: string[] // Para selects
 }
 
 interface FormProps {
     fields: Field[],
-    setFormData: (name: string, value: string | number) => void,
+    setFormData: (name: string, value: string) => void,
     onSubmit: () => void
 }
 
 const Form: React.FC<FormProps> = ({ fields, setFormData, onSubmit }) => {
+    
+    const Asterisco = () => {
+        return(
+            <span style={{color: "red", fontWeight: "bold", paddingLeft: "2px"}}>*</span>
+        )
+    }
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
         const { name, value } = e.target
@@ -31,20 +38,22 @@ const Form: React.FC<FormProps> = ({ fields, setFormData, onSubmit }) => {
     };
 
     return (
-        <form onSubmit={handleSubmit}>
+        <form onSubmit={handleSubmit} style={{paddingLeft: "10px", maxWidth: "800px"}}>
             {
                 fields.map((field) => {
+                    const name: string = field.name ?? field.label.toLowerCase();
+                    const required: boolean = field.required ?? true;
                     return(
-                        <div key={field.name}>
-                            <label htmlFor={field.name}>{field.label}</label>
+                        <div style={{display: "flex", padding: "10px 0px"}}>
+                            <label htmlFor={name} style={{width: "170px"}}>{field.label}{required?? <Asterisco />}</label>
                             {
                                 field.type !== "select"?
-                                    <input type={field.type} id={field.name} name={field.name} value={field.value} onChange={handleChange} />
+                                    <input style={{flex: "1", ...(field.type=="date" && {textAlign: "right", paddingRight: "3px"})}} type={field.type} id={name} name={name} value={field.value} onChange={handleChange} required={required}/>
                                 :
-                                    <select id={field.name} name={field.name} value={field.value} onChange={handleChange} >
-                                        <option value={-1} disabled={true}>Selecciona una opción</option>
+                                    <select style={{flex: "1", direction: "rtl", paddingRight: "13px"}} id={name} name={name} value={field.value} onChange={handleChange} required={required}>
+                                        <option value="" disabled>Selecciona una opción</option>
                                         {
-                                            field.options?.map((option) => (<option key={option.value} value={option.value}>{option.label}</option>))
+                                            field.options?.map((option, index) => (<option value={index}>{option}</option>))
                                         }
                                     </select>
                             }
@@ -52,7 +61,7 @@ const Form: React.FC<FormProps> = ({ fields, setFormData, onSubmit }) => {
                     )
                 })
             }
-            <button type="submit">Enviar</button>
+            <button type="submit" style={{width: "100%"}}>Enviar</button>
         </form>
     );
 };

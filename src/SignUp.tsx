@@ -10,7 +10,7 @@ const SignUp = () => {
     nombre: string;
     apellidos: string;
     correo: string;
-    id_genero: number;
+    id_genero: string;
     nacimiento: string;
     password: string;
   }
@@ -19,7 +19,7 @@ const SignUp = () => {
     nombre: '',
     apellidos: '',
     correo: '',
-    id_genero: -1,
+    id_genero: '',
     nacimiento: '',
     password: ''
   }
@@ -72,35 +72,6 @@ const SignUp = () => {
   }
 
   const ValidarCuenta = () => {
-    let r: string[] = []
-    //Datos obligatorios
-    if(usuario.nombre===''){
-      r.push('el nombre')
-    }
-    if(usuario.correo===''){
-      r.push('el correo')
-    }
-    if(usuario.id_genero===-1){
-      r.push('el género')
-    }
-    if(usuario.nacimiento===''){
-      r.push('la fecha de nacimiento')
-    }
-    if(usuario.password==='' || password2===''){
-      r.push('la contraseña')
-    }
-    if(r.length!==0){
-      let t=`Falta introducir ${r[0]}, `
-      for(let i=1;i<r.length;i++){
-        if(i===r.length-1){
-          t+="y "
-        }
-        t+=r[i]+", "
-      }
-      t = t.substring(0, t.length-2)
-      alert(t)
-      return false;
-    }
     //Correo institucional
     if(!usuario.correo.includes('@aloe.ulima.edu.pe')){
       alert("Solo se permiten correos institucionales de la Ulima (@aloe.ulima.edu.pe)")
@@ -143,21 +114,16 @@ const SignUp = () => {
   }
 
   const formData: Field[] = [
-    { name: "nombre", label: "Nombre", type: "text", value: usuario.nombre },
-    { name: "apellidos", label: "Apellidos", type: "text", value: usuario.apellidos },
-    { name: "correo", label: "Correo", type: "email", value: usuario.correo },
+    { label: "Correo", type: "email", value: usuario.correo },
+    { label: "Nombre", type: "text", value: usuario.nombre },
+    { label: "Apellidos", type: "text", value: usuario.apellidos },
     {
       name: "id_genero", label: "Género", type: "select", value: usuario.id_genero,
-      options: [
-        { label: "Masculino", value: 0 },
-        { label: "Femenino", value: 1 },
-        { label: "Otro", value: 2 },
-        { label: "Prefiero no decirlo", value: 3 }
-      ]
+      options: [ "Masculino", "Femenino", "Otro", "Prefiero no decirlo" ]
     },
-    { name: "nacimiento", label: "Nacimiento", type: "date", value: usuario.nacimiento },
     { name: "password", label: "Contraseña", type: "password", value: usuario.password },
-    { name: "password2", label: "Repite tu contraseña", type: "password", value: password2 }
+    { name: "password2", label: "Repite tu contraseña", type: "password", value: password2 },
+    { label: "Nacimiento", type: "date", value: usuario.nacimiento }
   ];
 
   const handleData = (name: string, value: string | number) => {
