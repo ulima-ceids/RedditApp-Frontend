@@ -13,6 +13,8 @@ function ForgotPassword(){
                 <button>Obtener código</button>
                 <input type="text" placeholder="Ingresa el código"></input>
                 <button>Enviar código</button>
+
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTLV7QKUXe0yNPpaBBv7c2YO-w45tYVIfdKKw&s" alt="Estrella Ulima"></img>
                 
             </div>
         </div>

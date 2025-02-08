@@ -6,6 +6,7 @@ import React from "react";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Login from './pages/Login';
 import ForgotPassword from './pages/ForgotPassword';
+import NewPassword from './pages/NewPassword';
 
 export default function App() {
   return (
@@ -15,6 +16,7 @@ export default function App() {
         <Route path="/register" element={<Register />} />
         <Route path="/login" element={<Login />}/>
         <Route path='/forgotpassword' element={<ForgotPassword/>}></Route>
+        <Route path='/newpassword' element={<NewPassword/>}></Route>
       </Routes>
     </BrowserRouter>
   );
