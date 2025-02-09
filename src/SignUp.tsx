@@ -1,7 +1,6 @@
-import React from 'react'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import Form, { Field } from './Form'
+import { Form, Email, Input, Select, Password, Calendar } from './Form'
 
 const SignUp = () => {
   const navigate = useNavigate()
@@ -43,103 +42,60 @@ const SignUp = () => {
     }
   }
   
-  const actualizarEdad = (value: string) => {
-    const f = new Date(value)
-    const today = new Date()
-    if(f>today){
-      alert("Esa fecha todavía no ha transcurrido")
-    }else{
-      //const dif = today - f;
-      //setUsuario({...usuario, nacimiento:value})
-      //setEdad(Math.floor(dif/(1000*60*60*24*365.25)));
-    }
-  }
-  
   const ExisteCorreo = (correo: string) => {
     //const u = usuarios.find((u) => u.correo == correo)
     //return (u !== undefined);
     return false;
   }
 
-  const DiferentesContra = (contra: string) => {
-    let c: string[] = [];
-    for(let i=0; i<contra.length; i++){
-      if(!c.includes(contra[i])){
-        c.push(contra[i])
-      }
-    }
-    return c.length;
-  }
-
   const ValidarCuenta = () => {
     //Correo institucional
-    if(!usuario.correo.includes('@aloe.ulima.edu.pe')){
-      alert("Solo se permiten correos institucionales de la Ulima (@aloe.ulima.edu.pe)")
-      return false;
-    }else if(usuario.correo.length<26){
-      alert("El correo institucional está incompleto")
-      return false;
-    }else if(parseInt(usuario.correo.substring(0,8))<=9999999 || !usuario.correo.endsWith('@aloe.ulima.edu.pe')){
-      alert("Formato del correo institucional incorrecto")
-      return false;
-    }else if(ExisteCorreo(usuario.correo)){
+    if(ExisteCorreo(usuario.correo)){
       alert("Ese correo institucional ya está en uso")
-      return false;
-    }
-    //Contraseña
-    if(usuario.password!==password2){
-      alert("Las contraseñas no coinciden")
-      return false;
-    }else if(usuario.password.length<7){
-      alert(`La contraseña debe tener al menos 8 caracteres (faltan ${8-usuario.password.length})`)
-      return false;
-    }else if(usuario.password.length<8){
-      alert(`La contraseña debe tener al menos 8 caracteres (falta ${8-usuario.password.length})`)
-      return false;
-    }
-    const n = DiferentesContra(usuario.password)
-    if(n<2){
-      alert(`La contraseña debe tener al menos 3 caracteres diferentes (faltan ${3-n})`)
-      return false;
-    }else if(n<3){
-      alert(`La contraseña debe tener al menos 3 caracteres diferentes (falta ${3-n})`)
-      return false;
-    }
-    //Edad
-    if(20 < 16){
-      alert("Necesitas tener al menos 16 años")
       return false;
     }
     return true;
   }
 
-  const formData: Field[] = [
-    { label: "Correo", type: "email", value: usuario.correo },
-    { label: "Nombre", type: "text", value: usuario.nombre },
-    { label: "Apellidos", type: "text", value: usuario.apellidos },
-    {
-      name: "id_genero", label: "Género", type: "select", value: usuario.id_genero,
-      options: [ "Masculino", "Femenino", "Otro", "Prefiero no decirlo" ]
-    },
-    { name: "password", label: "Contraseña", type: "password", value: usuario.password },
-    { name: "password2", label: "Repite tu contraseña", type: "password", value: password2 },
-    { label: "Nacimiento", type: "date", value: usuario.nacimiento }
-  ];
+  const handleChange = (field: keyof typeof usuario) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+    setUsuario(prev => ({ ...prev, [field]: e.target.value }));
+  };
 
-  const handleData = (name: string, value: string | number) => {
-    if (name === "password2") {
-      setPassword2(value as string);
+  const [maxDate, setMaxDate] = useState<string>('')
+  useEffect(() => {
+    const hoy = new Date().toISOString().split("T")[0];
+    setMaxDate(hoy);
+  }, []);
+
+  const validarContraseña = (input: EventTarget & (HTMLInputElement | HTMLSelectElement)) => {
+    const value = input.value;
+
+    if (new Set(value).size < 3) {
+      input.setCustomValidity("La contraseña debe tener al menos 3 caracteres diferentes.");
     } else {
-      setUsuario((prev) => ({
-        ...prev,
-        [name]: value,
-      }));
+      input.setCustomValidity("");
+    }
+  };
+
+  const validarRepetirContraseña = (input: EventTarget & (HTMLInputElement | HTMLSelectElement)) => {
+    if (input.value !== usuario.password) {
+      input.setCustomValidity("Las contraseñas no coinciden.");
+    } else {
+      input.setCustomValidity("");
     }
   };
 
   return (
     <div>
-      <Form fields={formData} setFormData={handleData} onSubmit={handleSubmit} />
+      <Form onSubmit={handleSubmit}>
+        <Email label="Correo" required value={usuario.correo} onChange={handleChange("correo")} pattern="[0-9]{8}@aloe\.ulima\.edu\.pe" />
+        <Input label="Nombre" required value={usuario.nombre} onChange={handleChange("nombre")} pattern="[A-Za-z ÁÉÍÓÚáéíóúÑñ]{2,}" />
+        <Input label="Apellidos" required value={usuario.apellidos} onChange={handleChange("apellidos")} pattern="[A-Za-z ÁÉÍÓÚáéíóúÑñ]{2,}" />
+        <Select label="Género" required options={["Masculino", "Femenino", "Otro", "Prefiero no decirlo"]} value={usuario.id_genero} name={"id_genero"} onChange={handleChange("id_genero")} />
+        <Password label="Contraseña" required value={usuario.password} name={"password"} onChange={(e) => {setUsuario({...usuario, password: e.target.value}); validarContraseña(e.target);}} minLength={8} />
+        <Password label="Repite tu contraseña" required value={password2} name={"password2"} onChange={(e) => {setPassword2(e.target.value); validarRepetirContraseña(e.target);}}/>
+        <Calendar label="Nacimiento" required value={usuario.nacimiento} onChange={handleChange("nacimiento")} maxDate={maxDate}/>
+      </Form>
     </div>
   );
 };
