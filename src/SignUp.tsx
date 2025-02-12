@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
-import { Form, Email, Input, Select, Password, Calendar } from './Form'
+import { useState, useEffect } from 'react';
+import { NavigateFunction, useNavigate } from 'react-router-dom';
+import { Form, Email, Input, Select, Password, Calendar } from '../components/Form';
+import UsuarioApi from '../api/usuario';
 
 const SignUp = () => {
-  const navigate = useNavigate()
+  const navigate: NavigateFunction = useNavigate();
   
   interface Usuario {
     nombre: string;
@@ -21,69 +22,62 @@ const SignUp = () => {
     id_genero: '',
     nacimiento: '',
     password: ''
-  }
-  const [usuario, setUsuario] = useState<Usuario>(defaultUsuario)
-  const [password2, setPassword2] = useState<string>('')
-  
-  const handleSubmit = async() => {
-    if(ValidarCuenta()){
-      /*const res = await UsuarioApi.register(usuario)
-      if(res.data.hasOwnProperty("message")){
-        alert(res.data.message)
-    }else{*/
-      alert("¡Cuenta creada exitosamente!")
-      const defaultCredenciales = {
-        correo: usuario.correo,
-        contrasena: usuario.password
-      }
-      //const res = await UsuarioApi.login(defaultCredenciales)
-      //window.localStorage.setItem("token", res.data.token);
-      navigate("/profile")
-    }
-  }
-  
-  const ExisteCorreo = (correo: string) => {
-    //const u = usuarios.find((u) => u.correo == correo)
-    //return (u !== undefined);
-    return false;
-  }
+  };
+  const [usuario, setUsuario] = useState<Usuario>(defaultUsuario);
+  const [password2, setPassword2] = useState<string>('');
+  //setEdad(Math.floor(dif/(1000*60*60*24*365.25)))
 
   const ValidarCuenta = () => {
+    const ExisteCorreo = (correo: string) => {
+      //const u = usuarios.find((u) => u.correo == correo)
+      //return (u !== undefined);
+      return false;
+    }
+    
     //Correo institucional
-    if(ExisteCorreo(usuario.correo)){
-      alert("Ese correo institucional ya está en uso")
+    if (ExisteCorreo(usuario.correo)) {
+      alert("Ese correo institucional ya está en uso");
       return false;
     }
     return true;
   }
 
+  const handleSubmit = async() => {
+    if (ValidarCuenta()) {
+      const res = await UsuarioApi.register(usuario);
+      if (res.data.hasOwnProperty("message")) {
+        alert(res.data.message);
+      } else {
+        alert("¡Cuenta creada exitosamente!");
+        const defaultCredenciales = {
+          correo: usuario.correo,
+          password: usuario.password
+        };
+        const res = await UsuarioApi.login(defaultCredenciales);
+        window.localStorage.setItem("token", res.data.token);
+        navigate("/profile");
+      }
+    }
+  }
+
   const handleChange = (field: keyof typeof usuario) => (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     setUsuario(prev => ({ ...prev, [field]: e.target.value }));
-  };
-
-  const [maxDate, setMaxDate] = useState<string>('')
-  useEffect(() => {
-    const hoy = new Date().toISOString().split("T")[0];
-    setMaxDate(hoy);
-  }, []);
+  }
 
   const validarContraseña = (input: EventTarget & (HTMLInputElement | HTMLSelectElement)) => {
-    const value = input.value;
-
-    if (new Set(value).size < 3) {
-      input.setCustomValidity("La contraseña debe tener al menos 3 caracteres diferentes.");
-    } else {
-      input.setCustomValidity("");
-    }
-  };
+    const distinct: number = new Set(input.value).size;
+    input.setCustomValidity(distinct < 3?  "La contraseña debe tener al menos 3 caracteres diferentes." : "");
+  }
 
   const validarRepetirContraseña = (input: EventTarget & (HTMLInputElement | HTMLSelectElement)) => {
-    if (input.value !== usuario.password) {
-      input.setCustomValidity("Las contraseñas no coinciden.");
-    } else {
-      input.setCustomValidity("");
-    }
-  };
+    input.setCustomValidity(input.value !== usuario.password? "Las contraseñas no coinciden.": "");
+  }
+
+  const [maxDate, setMaxDate] = useState<string>('');
+  useEffect(() => {
+    const hoy: string = new Date().toISOString().split("T")[0];
+    setMaxDate(hoy);
+  }, []);
 
   return (
     <div>
@@ -91,13 +85,13 @@ const SignUp = () => {
         <Email label="Correo" required value={usuario.correo} onChange={handleChange("correo")} pattern="[0-9]{8}@aloe\.ulima\.edu\.pe" />
         <Input label="Nombre" required value={usuario.nombre} onChange={handleChange("nombre")} pattern="[A-Za-z ÁÉÍÓÚáéíóúÑñ]{2,}" />
         <Input label="Apellidos" required value={usuario.apellidos} onChange={handleChange("apellidos")} pattern="[A-Za-z ÁÉÍÓÚáéíóúÑñ]{2,}" />
-        <Select label="Género" required options={["Masculino", "Femenino", "Otro", "Prefiero no decirlo"]} value={usuario.id_genero} name={"id_genero"} onChange={handleChange("id_genero")} />
-        <Password label="Contraseña" required value={usuario.password} name={"password"} onChange={(e) => {setUsuario({...usuario, password: e.target.value}); validarContraseña(e.target);}} minLength={8} />
-        <Password label="Repite tu contraseña" required value={password2} name={"password2"} onChange={(e) => {setPassword2(e.target.value); validarRepetirContraseña(e.target);}}/>
+        <Select label="Género" required options={["Masculino", "Femenino", "Otro", "Prefiero no decirlo"]} value={usuario.id_genero} name="id_genero" onChange={handleChange("id_genero")} />
+        <Password label="Contraseña" required value={usuario.password} name="password" onChange={(e) => {setUsuario({...usuario, password: e.target.value}); validarContraseña(e.target);}} minLength={8} />
+        <Password label="Repite tu contraseña" required value={password2} name="password2" onChange={(e) => {setPassword2(e.target.value); validarRepetirContraseña(e.target);}} />
         <Calendar label="Nacimiento" required value={usuario.nacimiento} onChange={handleChange("nacimiento")} maxDate={maxDate}/>
       </Form>
     </div>
-  );
+  )
 };
 
 export default SignUp;

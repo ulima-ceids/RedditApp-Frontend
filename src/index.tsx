@@ -1,12 +1,12 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import './index.css';
 import RouterApp from './RouterApp';
+import './index.css';
 
-const rootElement = document.getElementById('root');
+const rootElement: HTMLElement = document.getElementById('root');
 
 if (rootElement) {
-  const root = ReactDOM.createRoot(rootElement);
+  const root: ReactDOM.Root = ReactDOM.createRoot(rootElement);
   root.render(
     <React.StrictMode>
       <RouterApp />

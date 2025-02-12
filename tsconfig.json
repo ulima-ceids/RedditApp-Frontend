@@ -9,8 +9,7 @@
         "skipLibCheck": true
     },
     "include": [
-        "src"
-    ],
+        "src", "components", "api" ],
     "exclude": [
         "src/**/*.js"
     ]

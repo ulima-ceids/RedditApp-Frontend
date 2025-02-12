@@ -1,12 +1,12 @@
-import './App.css';
 import { Link } from "react-router-dom";
+import './App.css';
 
 const App = () => {
     return (
         <div className="App">
             <header className="App-header">
             <p>
-                Edit <code>src/App.js</code> and save to reload.
+                Edit <code>src/App.js</code> and save to reload
             </p>
             <a
                 className="App-link"
@@ -19,7 +19,7 @@ const App = () => {
             </header>
             <Link to="/signup">SignUp</Link>
         </div>
-    );
+    )
 };
 
 export default App;

@@ -5,7 +5,7 @@ const FormContext = createContext<boolean>(false);
 const useFormCheck = () => {
     const isInsideForm = useContext(FormContext);
     if (!isInsideForm) throw new Error("Este componente solo puede usarse dentro de <Form>");
-};
+}
 
 interface FieldWrapperProps {
     label: string;
@@ -18,14 +18,14 @@ const FieldWrapper: React.FC<FieldWrapperProps> = memo(({ label, required, child
 
     const Asterisco = () => (
         <span style={{color: "red", fontWeight: "bold", paddingLeft: "2px"}}>*</span>
-    );
+    )
 
     return (
         <div style={{ display: "flex", padding: "10px 0px" }}>
             <label htmlFor={id} style={{width: "170px"}}>{label}{required?<Asterisco />:null}</label>
             {children}
         </div>
-    );
+    )
 });
 
 interface FormProps {
@@ -36,9 +36,9 @@ interface FormProps {
 const Form: React.FC<FormProps> = ({ onSubmit, children }) => {
 
     const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault()
-        onSubmit()
-    };
+        e.preventDefault();
+        onSubmit();
+    }
 
     return (
         <FormContext.Provider value={true}>
@@ -47,7 +47,7 @@ const Form: React.FC<FormProps> = ({ onSubmit, children }) => {
                 <button type="submit" style={{width: "100%"}}>Enviar</button>
             </form>
         </FormContext.Provider>
-    );
+    )
 };
 
 interface Field {
@@ -71,7 +71,7 @@ const createField = (type: string, style: React.CSSProperties = null) => memo(({
         <FieldWrapper label={label} required={required} id={id}>
             <input style={{...style, flex: "1" }} title="falta title y placeholder" placeholder="falta title y placeholder" minLength={minLength} maxLength={maxLength} type={type} pattern={pattern} id={id} value={value} onChange={onChange} required={required} max={maxDate} />
         </FieldWrapper>
-    );
+    )
 });
 
 const Email = createField("email");
@@ -90,7 +90,7 @@ const Select = memo(({ label, value, required = false, options, name, onChange }
                 { options.map((option, index) => (<option key={index} value={option}>{option}</option>)) }
             </select>
         </FieldWrapper>
-    );
+    )
 });
 
 export { Form, Email, Input, Select, Password, Calendar };

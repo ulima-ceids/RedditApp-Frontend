@@ -1,5 +1,5 @@
-import App from './App';
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import App from './App';
 import SignUp from './SignUp';
 import Login from './Login';
 
@@ -12,7 +12,7 @@ const RouterApp = () => {
         <Route path="/login" element={<Login />} />
       </Routes>
     </Router>
-  );
+  )
 };
 
 export default RouterApp;
