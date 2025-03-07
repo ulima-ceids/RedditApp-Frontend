@@ -1,27 +1,27 @@
 import { useState, useEffect } from 'react';
 import { NavigateFunction, useNavigate } from 'react-router-dom';
-import { Form, Email, Input, Select, Password, Calendar } from '../components/Form';
-import UsuarioApi from '../api/usuario';
+import { Form, Input, Select, Password, Calendar } from './components/Form';
+import UsuarioApi from './api/usuario';
 
 const SignUp = () => {
   const navigate: NavigateFunction = useNavigate();
   
   interface Usuario {
+    codigoUlima: string;
     nombre: string;
     apellidos: string;
-    correo: string;
-    id_genero: string;
-    nacimiento: string;
+    genero: '' | 'M' | 'F' | 'O' | 'p';
     password: string;
+    fechaNacimiento: string;
   }
 
   const defaultUsuario: Usuario = {
+    codigoUlima: '',
     nombre: '',
     apellidos: '',
-    correo: '',
-    id_genero: '',
-    nacimiento: '',
-    password: ''
+    genero: '',
+    password: '',
+    fechaNacimiento: ''
   };
   const [usuario, setUsuario] = useState<Usuario>(defaultUsuario);
   const [password2, setPassword2] = useState<string>('');
@@ -35,7 +35,7 @@ const SignUp = () => {
     }
     
     //Correo institucional
-    if (ExisteCorreo(usuario.correo)) {
+    if (ExisteCorreo("")) {
       alert("Ese correo institucional ya está en uso");
       return false;
     }
@@ -43,17 +43,18 @@ const SignUp = () => {
   }
 
   const handleSubmit = async() => {
+    //console.log(await UsuarioApi.findUser())
     if (ValidarCuenta()) {
-      const res = await UsuarioApi.register(usuario);
-      if (res.data.hasOwnProperty("message")) {
+      const aux = {
+        ...usuario,
+        fechaNacimiento: new Date(usuario.fechaNacimiento)
+      };
+      //console.log(aux);
+      const res = await UsuarioApi.register(aux);
+      if (res.data.msg !== "") {
         alert(res.data.message);
       } else {
         alert("¡Cuenta creada exitosamente!");
-        const defaultCredenciales = {
-          correo: usuario.correo,
-          password: usuario.password
-        };
-        const res = await UsuarioApi.login(defaultCredenciales);
         window.localStorage.setItem("token", res.data.token);
         navigate("/profile");
       }
@@ -82,13 +83,13 @@ const SignUp = () => {
   return (
     <div>
       <Form onSubmit={handleSubmit}>
-        <Email label="Correo" required value={usuario.correo} onChange={handleChange("correo")} pattern="[0-9]{8}@aloe\.ulima\.edu\.pe" />
+        <Input label="Código" required value={usuario.codigoUlima} onChange={handleChange("codigoUlima")} pattern="[0-9]{8}" maxLength={8} />
         <Input label="Nombre" required value={usuario.nombre} onChange={handleChange("nombre")} pattern="[A-Za-z ÁÉÍÓÚáéíóúÑñ]{2,}" />
         <Input label="Apellidos" required value={usuario.apellidos} onChange={handleChange("apellidos")} pattern="[A-Za-z ÁÉÍÓÚáéíóúÑñ]{2,}" />
-        <Select label="Género" required options={["Masculino", "Femenino", "Otro", "Prefiero no decirlo"]} value={usuario.id_genero} name="id_genero" onChange={handleChange("id_genero")} />
+        <Select label="Género" required options={["Masculino", "Femenino", "Otro", "prefiero no decirlo"]} value={usuario.genero} name="id_genero" onChange={handleChange("genero")} />
         <Password label="Contraseña" required value={usuario.password} name="password" onChange={(e) => {setUsuario({...usuario, password: e.target.value}); validarContraseña(e.target);}} minLength={8} />
         <Password label="Repite tu contraseña" required value={password2} name="password2" onChange={(e) => {setPassword2(e.target.value); validarRepetirContraseña(e.target);}} />
-        <Calendar label="Nacimiento" required value={usuario.nacimiento} onChange={handleChange("nacimiento")} maxDate={maxDate}/>
+        <Calendar label="Nacimiento" required value={usuario.fechaNacimiento} onChange={handleChange("fechaNacimiento")} maxDate={maxDate}/>
       </Form>
     </div>
   )

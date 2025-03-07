@@ -87,7 +87,7 @@ const Select = memo(({ label, value, required = false, options, name, onChange }
         <FieldWrapper label={label} required={required} id={id}>
             <select style={{flex: "1", direction: "rtl", paddingRight: "13px"}} id={id} value={value} onChange={onChange} required={required}>
                 <option value="" disabled>Selecciona una opción</option>
-                { options.map((option, index) => (<option key={index} value={option}>{option}</option>)) }
+                { options.map((option, index) => (<option key={index} value={option[0]}>{option}</option>)) }
             </select>
         </FieldWrapper>
     )
