@@ -43,19 +43,18 @@ const SignUp = () => {
   }
 
   const handleSubmit = async() => {
-    //console.log(await UsuarioApi.findUser())
     if (ValidarCuenta()) {
       const aux = {
         ...usuario,
         fechaNacimiento: new Date(usuario.fechaNacimiento)
       };
-      //console.log(aux);
       const res = await UsuarioApi.register(aux);
-      if (res.data.msg !== "") {
-        alert(res.data.message);
+      if (res.msg !== "") {
+        alert(res.msg);
       } else {
         alert("¡Cuenta creada exitosamente!");
-        window.localStorage.setItem("token", res.data.token);
+        //window.localStorage.setItem("token", res.token);
+        console.log(res.usuario);
         navigate("/profile");
       }
     }
