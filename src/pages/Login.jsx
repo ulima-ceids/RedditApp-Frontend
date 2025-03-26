@@ -1,12 +1,18 @@
 import React from "react";
 import { useForm } from 'react-hook-form';
 import "./Login.css";
+import { useNavigate } from "react-router-dom";
 
 function Login() {
+    const navigate = useNavigate();
     const { register , handleSubmit, formState: { errors } } = useForm();
     const onSubmit = (data) => {
         console.log(data);
     };
+    const goToHome = () => {
+        console.log("Go to Forgot Password");
+        navigate("/forgotpassword")
+      };
 
     return (
         <div className="container">
@@ -37,7 +43,7 @@ function Login() {
                     />
                     {errors.password && <span>{errors.password.message}</span>}
                 </div>
-                <button type="submit" className="btn btn-primary">
+                <button type="submit" className="btn btn-primary" onClick={goToHome}>   
                     Iniciar Sesion
                 </button>
             </form>
